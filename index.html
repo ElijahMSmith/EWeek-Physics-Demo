@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<h1>Bouncy Ball Simulation!</h1>
+		<div id="settingsRow">
+			<div class="settingsGroup">
+				<span id="spawnCount">Spawn Count</span>
+				<div class="settingsContainer">
+					<input
+						type="text"
+						inputmode="numeric"
+						id="countInput"
+						value="1"
+					/>
+					<button id="countSubmit" onclick="resetSimulation()">
+						RESET
+					</button>
+				</div>
+			</div>
+
+			<div class="settingsGroup">
+				<span id="gravityStrength">Gravity Strength</span>
+				<div class="settingsContainer">
+					<input
+						type="text"
+						inputmode="numeric"
+						id="gravityInput"
+						value="9.81"
+					/>
+					<button id="gravitySubmit" onclick="resetSimulation()">
+						RESET
+					</button>
+				</div>
+			</div>
+		</div>
+		<div id="canvasContainer">
+			<canvas id="physicsCanvas" />
+		</div>
+		<script src="physics.js"></script>
+	</body>
+</html>
