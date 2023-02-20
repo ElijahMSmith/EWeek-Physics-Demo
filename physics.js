@@ -20,6 +20,10 @@ let objects = [];
 
 const DIAMETER = 50; //px
 const RADIUS = DIAMETER / 2;
+const MASS = 1; // kg
+const PIX_IN_M = 100;
+const Cd = 1;
+
 const TICK_RATE = 10;
 const DELTA_T = TICK_RATE / 1000;
 
@@ -49,7 +53,7 @@ function startSimulation() {
 			Math.random() * (canvas.width - DIAMETER) + RADIUS
 		);
 		const startingY = Math.floor(
-			Math.random() * (canvas.height / 4) + RADIUS
+			Math.random() * (canvas.height - 2 * DIAMETER)
 		);
 		const newObj = {
 			position: {
@@ -57,8 +61,8 @@ function startSimulation() {
 				y: startingY,
 			},
 			velocity: {
-				x: Math.floor(Math.random() * 200 - 100),
-				y: 0,
+				x: Math.random() * 5,
+				y: Math.random() * 15 - 7.5,
 			},
 			color: {
 				red: Math.floor(Math.random() * 257),
@@ -74,13 +78,23 @@ function startSimulation() {
 	updateClock = setInterval(function update() {
 		let g = Number(gravityInput.value);
 
-		const MASS = 1;
-		const G_MODIFIER = 100;
-
 		for (let ball of objects) {
-			const Fg = MASS * g * G_MODIFIER;
-			const simpleFd = Fg * (ball.velocity.y / 2000);
-			const netF = Fg - simpleFd;
+			const RADIUS_M = RADIUS / PIX_IN_M;
+			const A = Math.PI * RADIUS_M * RADIUS_M;
+
+			const Fg = MASS * g;
+			const Fd =
+				(ball.velocity.y > 0 ? -1 : 1) *
+				0.5 *
+				1.2 *
+				ball.velocity.y *
+				ball.velocity.y *
+				Cd *
+				A;
+
+			//console.log(g, Fg, Fd);
+
+			const netF = Fg + Fd;
 			const netA = netF / MASS;
 
 			let newVel = {
@@ -89,11 +103,12 @@ function startSimulation() {
 			};
 
 			let newPos = {
-				x: ball.position.x + ball.velocity.x * DELTA_T,
+				x: ball.position.x + ball.velocity.x * DELTA_T * PIX_IN_M,
 				y:
 					ball.position.y +
-					ball.velocity.y * DELTA_T +
-					0.5 * netA * DELTA_T * DELTA_T,
+					(ball.velocity.y * DELTA_T +
+						0.5 * netA * DELTA_T * DELTA_T) *
+						PIX_IN_M,
 			};
 
 			if (newPos.y > MAX_Y) {
