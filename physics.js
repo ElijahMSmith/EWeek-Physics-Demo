@@ -22,8 +22,6 @@ const DIAMETER = 50; //px
 const RADIUS = DIAMETER / 2;
 const TICK_RATE = 10;
 const DELTA_T = TICK_RATE / 1000;
-const FORCE_MODIFIER = 50;
-const DRAG_MODIFIER = 1 / 150;
 
 let canvas = document.querySelector("canvas");
 canvas.width = 1000;
@@ -74,16 +72,20 @@ function startSimulation() {
 	if (updateClock) clearInterval(updateClock);
 
 	updateClock = setInterval(function update() {
-		let gravity = Number(gravityInput.value);
-		let p = 1.2;
+		let g = Number(gravityInput.value);
+
+		const MASS = 1;
+		const G_MODIFIER = 100;
+
 		for (let ball of objects) {
-			// Ignoring A and T since we don't have a good concept of what is a meter
-			let netForce = gravity - 0.5 * p * ball.velocity.y * DRAG_MODIFIER;
-			netForce = FORCE_MODIFIER * netForce;
+			const Fg = MASS * g * G_MODIFIER;
+			const simpleFd = Fg * (ball.velocity.y / 2000);
+			const netF = Fg - simpleFd;
+			const netA = netF / MASS;
 
 			let newVel = {
 				x: ball.velocity.x,
-				y: ball.velocity.y + netForce * DELTA_T,
+				y: ball.velocity.y + netA * DELTA_T,
 			};
 
 			let newPos = {
@@ -91,7 +93,7 @@ function startSimulation() {
 				y:
 					ball.position.y +
 					ball.velocity.y * DELTA_T +
-					0.5 * netForce * DELTA_T * DELTA_T,
+					0.5 * netA * DELTA_T * DELTA_T,
 			};
 
 			if (newPos.y > MAX_Y) {

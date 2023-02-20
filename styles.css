@@ -1,12 +1,20 @@
+:root {
+	--color-1: #e63946;
+	--color-2: #f1faee;
+	--color-3: #a8dadc;
+	--color-4: #457b9d;
+	--color-5: #1d3557;
+}
+
 body {
-	background-color: #324bed;
+	background-color: var(--color-5);
 }
 
 h1 {
 	width: 100%;
 	text-align: center;
 	margin: 30px 0px;
-	color: #fa2884;
+	color: var(--color-2);
 	font-size: 4em;
 }
 
@@ -14,7 +22,7 @@ canvas {
 	border: 1px solid black;
 	width: 1000px;
 	height: 800px;
-	background-color: #22b8d6;
+	background-color: var(--color-1);
 	margin-top: 50px;
 }
 
@@ -35,7 +43,7 @@ canvas {
 
 .settingsContainer > * {
 	border-radius: 5%/15%;
-	border: 1px solid gray;
+	border: 1px solid var(--color-3);
 	height: 100%;
 	margin: 0px 2px;
 }
@@ -48,19 +56,20 @@ input {
 
 button {
 	width: 30%;
+	background-color: var(--color-3);
 }
 
 button:hover {
-	border: 2px solid darkgrey;
+	border: 2px solid var(--color-4);
 }
 
 button:active {
-	background-color: darkgray;
+	background-color: var(--color-4);
 }
 
 span {
 	font-size: x-large;
-	color: #fa2884;
+	color: var(--color-2);
 	width: 100%;
 	text-align: center;
 	display: block;
